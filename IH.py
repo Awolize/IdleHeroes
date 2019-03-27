@@ -271,7 +271,7 @@ def Everything():
     CheckIn()
     Arena()
     SealLand()
-    LookAtAds()    
+    LookAtAds() 
     CollectMail()
     EventRaid()
     print("Done")
