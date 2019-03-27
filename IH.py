@@ -35,7 +35,6 @@ def delay(duration):
 def click(x, y):
     mouse.position = (x, y)
     mouse.click(pynputButton.left)
-    #pyautogui.click(x, y, button='left')
     delay(0.7)
 
 def MoveMainScreen(direction, i=2):
@@ -295,36 +294,57 @@ def EventRaid():
     delay(0.5)
 
     challengePos = imageSearch.imageSearchMultiple("collection/Event_Choose_Challenge.png")
-    
+    print(challengePos)
     for elem in challengePos:
-        click(challengePos[0], challengePos[1])
+        imageSearch.click_image("collection/Event_Choose_Challenge.png", elem, "left", 0.1)
+        delay(0.5)
         pos = imageSearch.imageSearch("collection/Event_Identifier.png")
-        if pos != -1:  
+        if pos[0] != -1:
             # Event_Buy_Plus.png
             pos = imageSearch.imageSearch("collection/Event_Buy_Plus.png")
             imageSearch.click_image("collection/Event_Buy_Plus.png", pos, "left", 0.1)
+            delay(0.5)
             # Event_Buy_Max.png
             pos = imageSearch.imageSearch("collection/Event_Buy_Max.png")
-            imageSearch.click_image("collection/Event_Buy_Max.png", pos, "left", 0.1)
+            if pos[0] != -1:
+                imageSearch.click_image("collection/Event_Buy_Max.png", pos, "left", 0.1)
+                delay(0.5)
             # Event_Buy_Ok.png
-            pos = imageSearch.imageSearch("collection/Event_Buy_Ok.png")
-            imageSearch.click_image("collection/Event_Buy_Ok.png", pos, "left", 0.1)
-
+                pos = imageSearch.imageSearch("collection/Event_Buy_Ok.png")
+                imageSearch.click_image("collection/Event_Buy_Ok.png", pos, "left", 0.1)
+                delay(1.5)
+        delay(1)
         pos = imageSearch.imageSearchMultiple("collection/Event_Choose_Level.png")
-        pos = max(pos, key=lambda x: x[1])
-        imageSearch.click_image("collection/Event_Choose_Level.png", pos, "left", 0.1)
+        print(pos)
+        pos = sorted(pos, key=lambda x: x[1], reverse=True)
+        pos = pos[0]
 
-        pos = imageSearch.imageSearch("collection/Event_Start_Battle.png")
-        imageSearch.click_image("collection/Event_Start_Battle.png", pos, "left", 0.1)
+        temp = imageSearch.imageSearch("collection/Event_Battle_Remaining.png")
+        if temp[0] == -1:
+            imageSearch.click_image("collection/Event_Choose_Level.png", pos, "left", 0.1)
+            delay(0.5)
+            pos = imageSearch.imageSearch("collection/Event_Start_Battle.png")
+            imageSearch.click_image("collection/Event_Start_Battle.png", pos, "left", 0.1)
 
-        pos = imageSearch.imageSearch("collection/Event_Next_Battle.png")
-        while pos != -1:
-            imageSearch.click_image("collection/Event_Next_Battle.png", pos, "left", 0.1)
-            pos = imageSearch.imageSearch("collection/Event_Next_Battle.png")
+            while True:
+                temp = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
+                while temp[0] == -1:
+                    delay(0.1)
+                    temp = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
+                delay(0.3)
 
-        pos = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
-        imageSearch.click_image("collection/Event_Battle_Ok.png", pos, "left", 0.1)
-    GotoMainMenu()
+                pos = imageSearch.imageSearch("collection/Event_Next_Battle.png")
+                if pos[0] == -1:
+                    pos = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
+                    imageSearch.click_image("collection/Event_Battle_Ok.png", pos, "left", 0.1)
+                    break
+                else:
+                    imageSearch.click_image("collection/Event_Next_Battle.png", pos, "left", 0.1)
+
+            delay(0.5)
+        pyautogui.press("escape")
+        delay(0.5)
+    pyautogui.press("esc")
 
 def Exit():
     ControllWindow().stop()

@@ -59,12 +59,13 @@ class ImageSearch:
             points.sort()
             realPoints = [points[0]]
             c = 0
-            x = points[0][0]
-            y = points[0][1]
+
             for i in points:
-                if (abs(x - i[0]) > 5) or (abs(y - i[1]) > 5):
-                    x = i[0]
-                    y = i[1]
+                save = True
+                for j in realPoints:
+                    if (abs(j[0] - i[0]) < 5) and (abs(j[1] - i[1]) < 5):
+                        save = False
+                if save:
                     realPoints.append(i)
 
         cv2.imwrite('testMultiple.png', img_rgb)
