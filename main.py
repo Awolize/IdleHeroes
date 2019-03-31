@@ -19,7 +19,7 @@ class ButtonLayout(GridLayout):
         self.add_widget(Button(text="CelestialIsland", on_press=lambda a: CelestialIsland()))
         self.add_widget(Button(text="HandOfMidas", on_press=lambda a: HandOfMidas()))
         self.add_widget(Button(text="EventRaid", on_press=lambda a: EventRaid()))
-        self.add_widget(Button(text="Arena", on_press=lambda a: Arena()))
+        self.add_widget(Button(text="Arena2", on_press=lambda a: Arena2()))
         self.add_widget(Button(text="SealLand", on_press=lambda a: SealLand()))
         self.add_widget(Button(text="LookAtAds", on_press=lambda a: LookAtAds()))
         self.add_widget(Button(text="Everything", on_press=lambda a: Everything()))
@@ -181,6 +181,7 @@ def CollectCampaign():
     targetNox()
     MoveMainScreen("right")
     click(430, 535)
+    delay(0.5)
     click(1453, 312)
     click(1415, 607)
     click(950, 774)
@@ -295,6 +296,7 @@ def EventRaid():
 
     challengePos = imageSearch.imageSearchMultiple("collection/Event_Choose_Challenge.png")
     print(challengePos)
+    delay(0.5)
     for elem in challengePos:
         imageSearch.click_image("collection/Event_Choose_Challenge.png", elem, "left", 0.1)
         delay(0.5)
@@ -329,9 +331,9 @@ def EventRaid():
             while True:
                 temp = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
                 while temp[0] == -1:
-                    delay(0.1)
+                    delay(0.3)
                     temp = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
-                delay(0.3)
+                delay(0.5)
 
                 pos = imageSearch.imageSearch("collection/Event_Next_Battle.png")
                 if pos[0] == -1:
@@ -340,8 +342,8 @@ def EventRaid():
                     break
                 else:
                     imageSearch.click_image("collection/Event_Next_Battle.png", pos, "left", 0.1)
+                delay(0.5)
 
-            delay(0.5)
         pyautogui.press("escape")
         delay(0.5)
     pyautogui.press("esc")
