@@ -15,11 +15,11 @@ class ButtonLayout(GridLayout):
     def __init__(self, **kwargs):
         super(ButtonLayout, self).__init__(**kwargs)
         self.cols = 3
-        self.add_widget(Button(text="CollectCampaign", on_press=lambda a: CollectCampaign()))
+        self.add_widget(Button(text="CollectCampaignLoop", on_press=lambda a: CollectCampaignLoop()))
         self.add_widget(Button(text="CelestialIsland", on_press=lambda a: CelestialIsland()))
         self.add_widget(Button(text="HandOfMidas", on_press=lambda a: HandOfMidas()))
         self.add_widget(Button(text="EventRaid", on_press=lambda a: EventRaid()))
-        self.add_widget(Button(text="Arena2", on_press=lambda a: Arena2()))
+        self.add_widget(Button(text="Arena", on_press=lambda a: Arena()))
         self.add_widget(Button(text="SealLand", on_press=lambda a: SealLand()))
         self.add_widget(Button(text="LookAtAds", on_press=lambda a: LookAtAds()))
         self.add_widget(Button(text="Everything", on_press=lambda a: Everything()))
@@ -142,7 +142,7 @@ def Arena2():
     delay(0.3)
     click(1142, 746)
     delay(0.3)
-    for _ in range(60):
+    for _ in range(50):
         pos = imageSearch.imageSearch("collection/Arena_Battle.png")
         while pos[0] != -1:
             waitForImageThenClick("collection/Arena_Battle.png") # click battle
@@ -186,6 +186,19 @@ def CollectCampaign():
     click(1415, 607)
     click(950, 774)
     click(367, 211)
+
+def CollectCampaignLoop():
+    while True:
+        print("CollectCampaignLoop")
+        targetNox()
+        MoveMainScreen("right")
+        click(430, 535)
+        delay(0.5)
+        click(1453, 312)
+        click(1415, 607)
+        click(950, 774)
+        click(367, 211)
+        delay(7200)
 
 def SealLand():
     print("SealLand")
@@ -299,23 +312,24 @@ def EventRaid():
     delay(0.5)
     for elem in challengePos:
         imageSearch.click_image("collection/Event_Choose_Challenge.png", elem, "left", 0.1)
-        delay(0.5)
+        delay(0.4)
         pos = imageSearch.imageSearch("collection/Event_Identifier.png")
         if pos[0] != -1:
             # Event_Buy_Plus.png
             pos = imageSearch.imageSearch("collection/Event_Buy_Plus.png")
             imageSearch.click_image("collection/Event_Buy_Plus.png", pos, "left", 0.1)
-            delay(0.5)
+            delay(0.2)
             # Event_Buy_Max.png
             pos = imageSearch.imageSearch("collection/Event_Buy_Max.png")
             if pos[0] != -1:
                 imageSearch.click_image("collection/Event_Buy_Max.png", pos, "left", 0.1)
-                delay(0.5)
             # Event_Buy_Ok.png
                 pos = imageSearch.imageSearch("collection/Event_Buy_Ok.png")
                 imageSearch.click_image("collection/Event_Buy_Ok.png", pos, "left", 0.1)
-                delay(1.5)
-        delay(1)
+                delay(0.5)
+            else:
+                delay(3.5)
+                
         pos = imageSearch.imageSearchMultiple("collection/Event_Choose_Level.png")
         print(pos)
         pos = sorted(pos, key=lambda x: x[1], reverse=True)
@@ -324,17 +338,20 @@ def EventRaid():
         temp = imageSearch.imageSearch("collection/Event_Battle_Remaining.png")
         if temp[0] == -1:
             imageSearch.click_image("collection/Event_Choose_Level.png", pos, "left", 0.1)
-            delay(0.5)
+            delay(0.4)
             pos = imageSearch.imageSearch("collection/Event_Start_Battle.png")
             imageSearch.click_image("collection/Event_Start_Battle.png", pos, "left", 0.1)
 
+            # Handles the battles itself and the repeat thing
             while True:
-                temp = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
-                while temp[0] == -1:
-                    delay(0.3)
-                    temp = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
-                delay(0.5)
-
+                #Waiting for the battle to end and show the Victory Screen (OK Button)
+                while True:
+                    pos = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
+                    if pos[0] != -1:
+                        break
+                delay(0.1)
+                
+                # Press Next if it exists, OK if it doesn't exist
                 pos = imageSearch.imageSearch("collection/Event_Next_Battle.png")
                 if pos[0] == -1:
                     pos = imageSearch.imageSearch("collection/Event_Battle_Ok.png")
@@ -342,9 +359,8 @@ def EventRaid():
                     break
                 else:
                     imageSearch.click_image("collection/Event_Next_Battle.png", pos, "left", 0.1)
-                delay(0.5)
-
-        pyautogui.press("escape")
+            delay(0.5)
+        pyautogui.press("esc")
         delay(0.5)
     pyautogui.press("esc")
 
