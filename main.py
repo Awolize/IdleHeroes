@@ -186,6 +186,7 @@ def CollectCampaign():
     click(1415, 607)
     click(950, 774)
     click(367, 211)
+    GotoMainMenu()
 
 def CollectCampaignLoop():
     while True:
@@ -226,6 +227,7 @@ def SealLand():
     delay(0.3)
     click(351, 213)
     delay(0.3)
+    GotoMainMenu()
 
 def UpdateBestSealLand():
     targetNox()
@@ -280,6 +282,8 @@ def CelestialIsland():
     GotoMainMenu()
 
 def Everything():
+    start = time.time()
+    
     CollectCampaign()
     HandOfMidas()
     CheckIn()
@@ -289,6 +293,9 @@ def Everything():
     CollectMail()
     EventRaid()
     print("Done")
+
+    end = time.time()
+    print(end - start)
 
 def CollectMail():
     print("CollectMail")
